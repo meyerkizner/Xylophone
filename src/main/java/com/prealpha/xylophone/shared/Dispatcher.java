@@ -18,6 +18,22 @@ package com.prealpha.xylophone.shared;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 
+/**
+ * The synchronous interface for event dispatching. Most users of this library
+ * will not need to write an implementation of this interface.
+ * 
+ * @author Meyer Kizner
+ * @see DispatcherAsync
+ * 
+ */
 public interface Dispatcher extends RemoteService {
+	/**
+	 * Executes an {@link Action}, returning a {@link Result} whose type is
+	 * consistent with the action's type parameter.
+	 * 
+	 * @param action
+	 *            an action to execute
+	 * @return the result of the action
+	 */
 	<R extends Result> R execute(Action<R> action);
 }

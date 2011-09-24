@@ -18,6 +18,23 @@ package com.prealpha.xylophone.shared;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+/**
+ * The asynchronous interface for event dispatching. Most users of this library
+ * will not need to write an implementation of this interface.
+ * 
+ * @author Meyer Kizner
+ * @see Dispatcher
+ * 
+ */
 public interface DispatcherAsync {
+	/**
+	 * Asynchronously executes an {@link Action}, returning to the callback a
+	 * {@link Result} whose type is consistent with the action's type parameter.
+	 * 
+	 * @param action
+	 *            an action to execute
+	 * @param callback
+	 *            a callback to receive the result of the action
+	 */
 	<R extends Result> void execute(Action<R> action, AsyncCallback<R> callback);
 }

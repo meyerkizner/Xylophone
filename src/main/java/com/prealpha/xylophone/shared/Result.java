@@ -18,5 +18,22 @@ package com.prealpha.xylophone.shared;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+/**
+ * The parent interface for objects which serve as results of an {@link Action}.
+ * Though each action class must map to a specific result type, the reverse need
+ * not be true; a single result type might have multiple corresponding action
+ * classes. Arbitrary objects cannot be allowed as action results; otherwise,
+ * GWT RPC would attempt to compile many unnecessary classes into the JavaScript
+ * output, including classes which are unserializable.
+ * <p>
+ * 
+ * Note that implementations of this interface must meet the requirements for
+ * RPC-serializable objects. In particular, implementation classes must declare
+ * a default constructor of any visibility, and they must be designed with the
+ * knowledge that final fields will not be serialized.
+ * 
+ * @author Meyer Kizner
+ * 
+ */
 public interface Result extends IsSerializable {
 }
