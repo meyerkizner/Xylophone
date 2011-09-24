@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to="module">
+	<inherits name="com.google.gwt.user.RemoteService" />
+	<source path="client" />
+	<source path="shared" />
+</module>
