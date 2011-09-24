@@ -29,11 +29,15 @@ import com.google.gwt.user.client.rpc.RemoteService;
 public interface Dispatcher extends RemoteService {
 	/**
 	 * Executes an {@link Action}, returning a {@link Result} whose type is
-	 * consistent with the action's type parameter.
+	 * consistent with the action's type parameter. An {@link ActionException}
+	 * may be thrown if the action cannot be dispatched or executed for any
+	 * reason.
 	 * 
 	 * @param action
 	 *            an action to execute
 	 * @return the result of the action
+	 * @throws ActionException
+	 *             thrown to indicate a problem during dispatch or execution
 	 */
-	<R extends Result> R execute(Action<R> action);
+	<R extends Result> R execute(Action<R> action) throws ActionException;
 }

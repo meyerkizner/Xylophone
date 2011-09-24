@@ -30,6 +30,9 @@ public interface DispatcherAsync {
 	/**
 	 * Asynchronously executes an {@link Action}, returning to the callback a
 	 * {@link Result} whose type is consistent with the action's type parameter.
+	 * Alternatively, the asynchronous execution may result in an
+	 * {@link ActionException} which will be returned to the callback in place
+	 * of a result.
 	 * 
 	 * @param action
 	 *            an action to execute
