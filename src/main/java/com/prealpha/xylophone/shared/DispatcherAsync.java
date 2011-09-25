@@ -40,6 +40,8 @@ public interface DispatcherAsync {
 	 *            an action to execute
 	 * @param callback
 	 *            a callback to receive the result of the action
+	 * @throws NullPointerException
+	 *             if {@code action} or {@code callback} is {@code null}
 	 */
 	<R extends Result> void execute(Action<R> action, AsyncCallback<R> callback);
 }

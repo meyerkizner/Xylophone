@@ -68,16 +68,6 @@ public interface ActionFilter extends DispatcherAsync {
 	 * filters followed by an actual dispatcher so that all executed actions are
 	 * run through several optimizations.
 	 * 
-	 * @param <R>
-	 *            the result type expected by the callback
-	 * @param action
-	 *            the action to execute, which must have the same result type as
-	 *            the callback
-	 * @param callback
-	 *            the asynchronous callback which receives the result or an
-	 *            exception
-	 * @throws NullPointerException
-	 *             if {@code action} or {@code callback} is {@code null}
 	 * @throws IllegalStateException
 	 *             if the backing {@code DispatcherAsync} has not yet been
 	 *             initialized with the {@link #init(DispatcherAsync)} method
