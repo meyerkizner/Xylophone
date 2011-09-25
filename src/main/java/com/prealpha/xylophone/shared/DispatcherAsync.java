@@ -34,6 +34,8 @@ public interface DispatcherAsync {
 	 * {@link ActionException} which will be returned to the callback in place
 	 * of a result.
 	 * 
+	 * @param <R>
+	 *            the result type expected by the callback
 	 * @param action
 	 *            an action to execute
 	 * @param callback
