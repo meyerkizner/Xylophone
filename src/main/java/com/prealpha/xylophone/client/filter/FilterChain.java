@@ -72,11 +72,15 @@ public final class FilterChain implements ActionFilter {
 	 * @throws NullPointerException
 	 *             if {@code filters} is {@code null}
 	 * @throws IllegalArgumentException
-	 *             if {@code filters} contains {@code null} elements
+	 *             if {@code filters} contains {@code null} elements or filters
+	 *             which have already been initialized
 	 */
 	public FilterChain(List<? extends ActionFilter> filters) {
 		checkNotNull(filters);
 		checkArgument(!filters.contains(null));
+		for (ActionFilter filter : filters) {
+			checkArgument(!filter.isInitialized());
+		}
 		this.filters = ImmutableList.copyOf(filters);
 	}
 
@@ -99,7 +103,7 @@ public final class FilterChain implements ActionFilter {
 	@Override
 	public void init(DispatcherAsync dispatcher) {
 		checkNotNull(dispatcher);
-		checkState(head == null);
+		checkState(!isInitialized());
 		ListIterator<ActionFilter> i1 = filters.listIterator(filters.size());
 		head = dispatcher;
 		while (i1.hasPrevious()) {
@@ -110,9 +114,14 @@ public final class FilterChain implements ActionFilter {
 	}
 
 	@Override
+	public boolean isInitialized() {
+		return (head != null);
+	}
+
+	@Override
 	public <R extends Result> void execute(Action<R> action,
 			AsyncCallback<R> callback) {
-		checkState(head != null);
+		checkState(isInitialized());
 		head.execute(action, callback);
 	}
 }

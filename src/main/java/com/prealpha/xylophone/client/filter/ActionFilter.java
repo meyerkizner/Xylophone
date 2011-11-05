@@ -50,6 +50,15 @@ public interface ActionFilter extends DispatcherAsync {
 	void init(DispatcherAsync dispatcher);
 
 	/**
+	 * Indicates whether or not this filter is initialized and ready to receive
+	 * actions.
+	 * 
+	 * @return {@code true} if the filter is initialized, {@code false} if not
+	 *         initialized
+	 */
+	boolean isInitialized();
+
+	/**
 	 * Asynchronously executes an {@link Action}, returning to the callback a
 	 * {@link Result} whose type is consistent with the action's type parameter.
 	 * Unlike a normal {@link DispatcherAsync}, the filter does not necessarily
