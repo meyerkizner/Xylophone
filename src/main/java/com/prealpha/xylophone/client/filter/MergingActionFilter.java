@@ -84,8 +84,16 @@ public final class MergingActionFilter implements ActionFilter {
 		if (action instanceof MergeableAction) {
 			MergeableAction<R> mergeableAction = (MergeableAction<R>) action;
 			if (active.containsKey(mergeableAction)) {
-				((MergedCallback<R>) active.get(mergeableAction))
-						.addCallback(callback);
+				/*
+				 * The map is guaranteed to contain callbacks with the same
+				 * result type as the corresponding actions. The else block
+				 * below honors this guarantee; it is the only place where
+				 * mappings are added or modified.
+				 */
+				@SuppressWarnings("unchecked")
+				MergedCallback<R> mergedCallback = (MergedCallback<R>) active
+						.get(mergeableAction);
+				mergedCallback.addCallback(callback);
 			} else {
 				MergedCallback<R> mergedCallback = new MergedCallback<R>(
 						mergeableAction);
