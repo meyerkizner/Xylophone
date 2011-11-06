@@ -40,18 +40,13 @@ public interface ActionHandler<A extends Action<R>, R extends Result> {
 	 * Executes an {@link Action} appropriate to this handler, returning a
 	 * {@link Result} whose type is consistent with the action's type parameter.
 	 * An {@link ActionException} may be thrown if the action cannot be
-	 * dispatched or executed for any reason. A {@link Dispatcher} is provided
-	 * so that the handler may reuse other actions as a means to provide a
-	 * correct result for its own.
+	 * dispatched or executed for any reason.
 	 * 
 	 * @param action
 	 *            an action to execute
-	 * @param dispatcher
-	 *            a {@code Dispatcher} which may be used to execute other
-	 *            actions as necessary
 	 * @return the result of the action
 	 * @throws ActionException
 	 *             thrown to indicate a problem during dispatch or execution
 	 */
-	R execute(A action, Dispatcher dispatcher) throws ActionException;
+	R execute(A action) throws ActionException;
 }

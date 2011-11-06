@@ -83,7 +83,7 @@ final class DispatcherImpl implements Dispatcher {
 			throws ActionException {
 		ActionHandler<Action<R>, R> handler = locateHandler(action);
 		if (handler != null) {
-			return handler.execute(action, this);
+			return handler.execute(action);
 		} else {
 			throw new HandlerNotFoundException(action);
 		}
