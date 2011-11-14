@@ -19,12 +19,14 @@ package com.prealpha.xylophone.shared.filter;
 import static com.google.common.base.Preconditions.*;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.prealpha.xylophone.shared.ActionException;
 import com.prealpha.xylophone.shared.Result;
 
 /**
  * Represents a failure for an action executed as part of a {@link BatchAction}.
- * In this case, a failure means that the action handler method threw an
- * exception, checked or unchecked.
+ * In this case, a failure means that the action handler method threw a checked
+ * {@link ActionException}. A failure through an unchecked exception will cause
+ * the entire batch to fail.
  * 
  * @param <R>
  *            the result type for the action
@@ -39,7 +41,7 @@ public final class BatchedActionFailure<R extends Result> implements
 	 * The exception we are delivering back to the client. Non-{@code final} to
 	 * allow for GWT serialization, but never altered in practice.
 	 */
-	private Throwable exception;
+	private ActionException exception;
 
 	// serialization support
 	@SuppressWarnings("unused")
@@ -48,12 +50,12 @@ public final class BatchedActionFailure<R extends Result> implements
 
 	/**
 	 * Constructs a new {@code BatchedActionFailure} object to encapsulate the
-	 * specified {@code Throwable}. The exception may not be null.
+	 * specified {@link ActionException}. The exception may not be {@code null}.
 	 * 
 	 * @param exception
 	 *            the exception to deliver
 	 */
-	public BatchedActionFailure(Throwable exception) {
+	public BatchedActionFailure(ActionException exception) {
 		checkNotNull(exception);
 		this.exception = exception;
 	}

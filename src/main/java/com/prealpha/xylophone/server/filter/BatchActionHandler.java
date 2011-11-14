@@ -90,8 +90,8 @@ final class BatchActionHandler implements
 		try {
 			R result = dispatcher.execute(action);
 			return new BatchedActionSuccess<R>(result);
-		} catch (Throwable caught) {
-			return new BatchedActionFailure<R>(caught);
+		} catch (ActionException ax) {
+			return new BatchedActionFailure<R>(ax);
 		}
 	}
 }
