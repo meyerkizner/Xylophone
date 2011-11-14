@@ -108,6 +108,14 @@ public abstract class ActionModule extends AbstractModule {
 	 * for the action class itself, since it may not have a constructor which is
 	 * eligible for JIT binding.
 	 */
+	/*
+	 * Warnings are suppressed because Guice's DSL essentially ignores generics,
+	 * so there would be no sense in attempting to return a
+	 * LinkedBindingBuilder<ActionHandler<A, R>>. We could have a
+	 * TypeLiteral-based implementation instead, but it's much more awkward to
+	 * use and suffers from its own problems.
+	 */
+	@SuppressWarnings("rawtypes")
 	protected final <A extends Action<?>> LinkedBindingBuilder<ActionHandler> bindAction(
 			Class<A> actionClass) {
 		Annotation annotation = UniqueAnnotations.create();

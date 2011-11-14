@@ -83,7 +83,7 @@ final class DispatcherImpl implements Dispatcher {
 			throws ActionException {
 		ActionHandler<Action<R>, R> handler = locateHandler(action);
 		if (handler != null) {
-			return handler.execute(action, this);
+			return handler.execute(action);
 		} else {
 			throw new HandlerNotFoundException(action);
 		}
@@ -103,6 +103,17 @@ final class DispatcherImpl implements Dispatcher {
 	/*
 	 * See the implementation comment for ActionModule.bindAction(Class).
 	 */
+	/*
+	 * Warnings are suppressed because generics are essentially ignored by
+	 * Guice's classes. All keys and bindings for Action are treated as if there
+	 * were no type parameter; no distinction is made between actions with
+	 * different type parameters. The only place where the warning would be
+	 * relevant is in the return statement, where an ActionHandler without type
+	 * parameters is implicitly converted to an ActionHandler<A, R>. However,
+	 * the implementation of ActionModule.bindAction(Class) ensures that this
+	 * conversion is always valid.
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private <A extends Action<R>, R extends Result> ActionHandler<A, R> locateHandler(
 			A action) {
 		Annotation annotation = null;

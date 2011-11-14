@@ -34,10 +34,14 @@ public interface DispatcherAsync {
 	 * {@link ActionException} which will be returned to the callback in place
 	 * of a result.
 	 * 
+	 * @param <R>
+	 *            the result type expected by the callback
 	 * @param action
 	 *            an action to execute
 	 * @param callback
 	 *            a callback to receive the result of the action
+	 * @throws NullPointerException
+	 *             if {@code action} or {@code callback} is {@code null}
 	 */
 	<R extends Result> void execute(Action<R> action, AsyncCallback<R> callback);
 }

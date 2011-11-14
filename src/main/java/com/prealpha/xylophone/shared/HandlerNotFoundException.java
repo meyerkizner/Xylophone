@@ -34,10 +34,6 @@ public final class HandlerNotFoundException extends RuntimeException {
 	}
 
 	public HandlerNotFoundException(Action<?> action) {
-		this(action.getClass());
-	}
-
-	public HandlerNotFoundException(Class<? extends Action> actionClass) {
-		super("No handler is registered for " + actionClass.getName());
+		super("No handler is registered for " + action.getClass().getName());
 	}
 }
