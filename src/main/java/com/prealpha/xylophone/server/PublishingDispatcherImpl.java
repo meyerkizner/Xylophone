@@ -85,7 +85,11 @@ final class PublishingDispatcherImpl implements PublishingDispatcher {
 			throws ActionException {
 		ActionHandler<Action<R>, R> handler = locateHandler(action);
 		if (handler != null) {
-			return handler.execute(action);
+			R result;
+			do {
+				result = handler.execute(action);
+			} while (!result.isComplete());
+			return result;
 		} else {
 			throw new HandlerNotFoundException(action);
 		}
