@@ -41,8 +41,8 @@ public interface PublishingDispatcher extends Dispatcher {
 	 * resulting from certain actions. Any results arising from actions which
 	 * match the predicate given will be included in the subscription.
 	 * Subsequently, the returned subscription ID can be used to
-	 * {@linkplain #check(int) check} to obtain the actual result objects.
-	 * Alternatively, the subscription may be {@linkplain #cancel(int)
+	 * {@linkplain #check(long) check} to obtain the actual result objects.
+	 * Alternatively, the subscription may be {@linkplain #cancel(long)
 	 * cancelled} at any time. The dispatcher may not free resources associated
 	 * with a subscription until it is cancelled, so it is recommended that all
 	 * clients do so when the subscription is no longer necessary.
@@ -53,7 +53,7 @@ public interface PublishingDispatcher extends Dispatcher {
 	 * @return a subscription ID, representing a subscription to all results
 	 *         arising from actions matching {@code predicate}
 	 */
-	int subscribe(Predicate<? super Action<?>> predicate);
+	long subscribe(Predicate<? super Action<?>> predicate);
 
 	/**
 	 * Checks a subscription for any results which may have been published since
@@ -75,7 +75,7 @@ public interface PublishingDispatcher extends Dispatcher {
 	 * @return a list of results, in chronological order, which have been
 	 *         published since the last time the subscription was checked
 	 */
-	ImmutableList<Result> check(int subscriptionId);
+	ImmutableList<Result> check(long subscriptionId);
 
 	/**
 	 * Cancels a subscription, freeing any resources associated with it. Any
@@ -84,5 +84,5 @@ public interface PublishingDispatcher extends Dispatcher {
 	 * @param subscriptionId
 	 *            the subscription ID to cancel
 	 */
-	void cancel(int subscriptionId);
+	void cancel(long subscriptionId);
 }
