@@ -36,34 +36,31 @@ public interface PublishingDispatcherAsync extends DispatcherAsync {
 	 *            a predicate matching actions to which a subscription is
 	 *            desired
 	 * @param callback
-	 *            a callback to receive the subscription
+	 *            a callback to receive the subscription ID
 	 * @see PublishingDispatcher#subscribe(Predicate)
 	 */
 	void subscribe(Predicate<? super Action<?>> predicate,
-			AsyncCallback<Subscription> callback);
+			AsyncCallback<Integer> callback);
 
 	/**
-	 * The asynchronous version of
-	 * {@link PublishingDispatcher#check(Subscription)}.
+	 * The asynchronous version of {@link PublishingDispatcher#check(int)}.
 	 * 
-	 * @param subscription
-	 *            the subscription to check
+	 * @param subscriptionId
+	 *            the subscription ID to check
 	 * @param callback
 	 *            a callback to receive the list of results
-	 * @see PublishingDispatcher#check(Subscription)
+	 * @see PublishingDispatcher#check(int)
 	 */
-	void check(Subscription subscription,
-			AsyncCallback<ImmutableList<Result>> callback);
+	void check(int subscriptionId, AsyncCallback<ImmutableList<Result>> callback);
 
 	/**
-	 * The asynchronous version of
-	 * {@link PublishingDispatcher#cancel(Subscription)}.
+	 * The asynchronous version of {@link PublishingDispatcher#cancel(int)}.
 	 * 
 	 * @param subscription
-	 *            the subscription to cancel
+	 *            the subscription ID to cancel
 	 * @param callback
 	 *            a callback to be notified on completion
-	 * @see PublishingDispatcher#cancel(Subscription)
+	 * @see PublishingDispatcher#cancel(int)
 	 */
-	void cancel(Subscription subscription, AsyncCallback<Void> callback);
+	void cancel(int subscriptionId, AsyncCallback<Void> callback);
 }
