@@ -21,12 +21,12 @@ import com.google.gwt.user.client.rpc.IsSerializable;
 /**
  * Represents a subscription to partial and complete {@link Result}s from an
  * {@link Action}, usually one that is long-running. Subscriptions should only
- * be created by and used with a specific {@link Dispatcher}.
+ * be created by and used with a specific {@link PublishingDispatcher}.
  * 
  * @param <R>
  *            the result type for this subscription
  * @author Meyer Kizner
- * @see Dispatcher
+ * @see PublishingDispatcher
  * 
  */
 public final class Subscription<R extends Result> implements IsSerializable {
@@ -45,7 +45,7 @@ public final class Subscription<R extends Result> implements IsSerializable {
 	/**
 	 * Constructs a new {@code Subscription} with the specified unique
 	 * identifier. To preserve the uniqueness of these identifiers, only
-	 * {@link Dispatcher} implementations should construct new
+	 * {@link PublishingDispatcher} implementations should construct new
 	 * {@code Subscription} objects.
 	 * 
 	 * @param identifier

@@ -29,9 +29,10 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * 
  * A {@code Result} object may represent a partial or complete result for the
  * action. A partial result means that the action is not yet complete, but that
- * the client should be aware of some progress. Clients can elect, through the
- * {@link Dispatcher}, to only accept complete results and discard any partial
- * results created during the execution process.
+ * the client should be aware of some progress. Clients can only obtain partial
+ * results by
+ * {@linkplain PublishingDispatcher#subscribe(com.google.common.base.Predicate)
+ * subscribing} to them through a {@link PublishingDispatcher}.
  * <p>
  * 
  * Note that implementations of this interface must meet the requirements for
