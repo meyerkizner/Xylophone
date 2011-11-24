@@ -19,17 +19,20 @@ package com.prealpha.xylophone.server;
 import java.lang.annotation.Annotation;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Binder;
+import com.google.inject.Singleton;
 import com.google.inject.binder.LinkedBindingBuilder;
 import com.google.inject.internal.UniqueAnnotations;
 import com.google.inject.util.Providers;
 import com.prealpha.xylophone.shared.Action;
 import com.prealpha.xylophone.shared.Dispatcher;
+import com.prealpha.xylophone.shared.PublishingDispatcher;
 
 /**
- * Provides a {@link Dispatcher} implementation which delegates action execution
- * to a number of {@link ActionHandler} implementations, one for each
- * {@link Action} type. Handlers are designated using the
- * {@link #bindAction(Class)} method.
+ * Provides a {@link Dispatcher} and {@link PublishingDispatcher} implementation
+ * which delegates action execution to a number of {@link ActionHandler}
+ * implementations, one for each {@link Action} type. Handlers are designated
+ * using the {@link #bindAction(Class)} method.
  * <p>
  * 
  * To use this module, create a subclass and override the abstract
@@ -38,11 +41,11 @@ import com.prealpha.xylophone.shared.Dispatcher;
  * details.
  * <p>
  * 
- * Once this module is installed, {@code Dispatcher} and any {@code Action}
- * classes configured are considered bound by Guice. Further attempts to bind
- * these types will result in double binding exceptions at runtime.
- * Additionally, the binding to the {@code Action} interface itself should not
- * be used.
+ * Once this module is installed, {@code Dispatcher},
+ * {@code PublishingDispatcher}, and any {@code Action} classes configured are
+ * considered bound by Guice. Further attempts to bind these types will result
+ * in double binding exceptions at runtime. Additionally, the binding to the
+ * {@code Action} interface itself should not be used.
  * 
  * @author Meyer Kizner
  * @see ActionHandler
@@ -57,15 +60,17 @@ public abstract class ActionModule extends AbstractModule {
 
 	/**
 	 * Configures the underlying {@link Binder} by binding the
-	 * {@link Dispatcher} interface to the internal implementation. The
-	 * {@link #configureActions()} method is then called to allow for further
-	 * configuration.
+	 * {@link Dispatcher} and {@link PublishingDispatcher} interfaces to the
+	 * internal implementation. The {@link #configureActions()} method is then
+	 * called to allow for further configuration.
 	 * 
 	 * @see AbstractModule#configure()
 	 */
 	@Override
 	protected final void configure() {
-		bind(Dispatcher.class).to(DispatcherImpl.class);
+		bind(Dispatcher.class).to(PublishingDispatcher.class);
+		bind(PublishingDispatcher.class).to(PublishingDispatcherImpl.class).in(
+				Singleton.class);
 		configureActions();
 	}
 
@@ -86,6 +91,11 @@ public abstract class ActionModule extends AbstractModule {
 	 * {@link ActionHandler} for the purposes of the {@link Dispatcher} provided
 	 * by this module. An example might be: <blockquote>
 	 * {@code bindAction(GetUser.class).to(GetUserHandler.class);} </blockquote>
+	 * <p>
+	 * 
+	 * If an action handler is stateful, it should be bound in the singleton
+	 * scope. Stateful action handlers are necessary when an action execution
+	 * requires the use of partial results.
 	 * <p>
 	 * 
 	 * When this method is called, the passed class is considered by Guice to be

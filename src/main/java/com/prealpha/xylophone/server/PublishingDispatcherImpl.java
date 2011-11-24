@@ -29,13 +29,15 @@ import com.prealpha.xylophone.shared.Action;
 import com.prealpha.xylophone.shared.ActionException;
 import com.prealpha.xylophone.shared.Dispatcher;
 import com.prealpha.xylophone.shared.HandlerNotFoundException;
+import com.prealpha.xylophone.shared.PublishingDispatcher;
 import com.prealpha.xylophone.shared.Result;
 
 /**
- * An implementation of {@link Dispatcher} designed for use with
- * {@link ActionModule}. {@code ActionModule} and its subclasses always bind the
- * {@code Dispatcher} interface to this class. Actions are handled using the
- * {@link ActionHandler} implementations bound using
+ * An implementation of {@link Dispatcher} and {@link PublishingDispatcher}
+ * designed for use with {@link ActionModule}. {@code ActionModule} and its
+ * subclasses always bind the {@code Dispatcher} and
+ * {@code PublishingDispatcher} interfaces to this class. Actions are handled
+ * using the {@link ActionHandler} implementations bound using
  * {@link ActionModule#bindAction(Class)}.
  * <p>
  * 
@@ -48,7 +50,7 @@ import com.prealpha.xylophone.shared.Result;
  * @author Meyer Kizner
  * 
  */
-final class DispatcherImpl implements Dispatcher {
+final class PublishingDispatcherImpl implements PublishingDispatcher {
 	/**
 	 * The injector we use to obtain action handlers.
 	 */
@@ -62,7 +64,7 @@ final class DispatcherImpl implements Dispatcher {
 	 *            the injector to use to obtain action handlers
 	 */
 	@Inject
-	private DispatcherImpl(Injector injector) {
+	private PublishingDispatcherImpl(Injector injector) {
 		this.injector = injector;
 	}
 
