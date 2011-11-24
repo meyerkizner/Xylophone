@@ -37,6 +37,8 @@ public interface PublishingDispatcherAsync extends DispatcherAsync {
 	 *            desired
 	 * @param callback
 	 *            a callback to receive the subscription ID
+	 * @throws NullPointerException
+	 *             if {@code predicate} is {@code null}
 	 * @see PublishingDispatcher#subscribe(Predicate)
 	 */
 	void subscribe(Predicate<? super Action<?>> predicate,
@@ -49,6 +51,8 @@ public interface PublishingDispatcherAsync extends DispatcherAsync {
 	 *            the subscription ID to check
 	 * @param callback
 	 *            a callback to receive the list of results
+	 * @throws IllegalArgumentException
+	 *             if {@code subscriptionId} is invalid
 	 * @see PublishingDispatcher#check(long)
 	 */
 	void check(long subscriptionId,
@@ -61,6 +65,8 @@ public interface PublishingDispatcherAsync extends DispatcherAsync {
 	 *            the subscription ID to cancel
 	 * @param callback
 	 *            a callback to be notified on completion
+	 * @throws IllegalArgumentException
+	 *             if {@code subscriptionId} is invalid
 	 * @see PublishingDispatcher#cancel(long)
 	 */
 	void cancel(long subscriptionId, AsyncCallback<Void> callback);

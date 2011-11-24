@@ -26,10 +26,6 @@ import com.google.common.collect.ImmutableList;
  * client which executed the action. That client can then use the
  * {@code subscriptionId} returned to check for published actions using long
  * polling.
- * <p>
- * 
- * All methods throw {@link NullPointerException} if any parameters are
- * {@code null}.
  * 
  * @author Meyer Kizner
  * @see PublishingDispatcherAsync
@@ -52,6 +48,8 @@ public interface PublishingDispatcher extends Dispatcher {
 	 *            desired
 	 * @return a subscription ID, representing a subscription to all results
 	 *         arising from actions matching {@code predicate}
+	 * @throws NullPointerException
+	 *             if {@code predicate} is {@code null}
 	 */
 	long subscribe(Predicate<? super Action<?>> predicate);
 
@@ -74,6 +72,8 @@ public interface PublishingDispatcher extends Dispatcher {
 	 *            the subscription ID to check
 	 * @return a list of results, in chronological order, which have been
 	 *         published since the last time the subscription was checked
+	 * @throws IllegalArgumentException
+	 *             if {@code subscriptionId} is invalid
 	 */
 	ImmutableList<Result> check(long subscriptionId);
 
@@ -83,6 +83,8 @@ public interface PublishingDispatcher extends Dispatcher {
 	 * 
 	 * @param subscriptionId
 	 *            the subscription ID to cancel
+	 * @throws IllegalArgumentException
+	 *             if {@code subscriptionId} is invalid
 	 */
 	void cancel(long subscriptionId);
 }
