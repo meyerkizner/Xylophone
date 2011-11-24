@@ -79,7 +79,10 @@ public interface Dispatcher extends RemoteService {
 	/**
 	 * Checks the specified subscription for any results which may have been
 	 * published since the last check. The results will be returned as a list,
-	 * in the order in which they were created.
+	 * in the order in which they were created. If there are no published
+	 * results pending, this method will block until a result is published.
+	 * Therefore, an empty list will only be returned if the subscription is
+	 * cancelled while the method is waiting.
 	 * <p>
 	 * 
 	 * There is no way to obtain the exact action object which generated any
