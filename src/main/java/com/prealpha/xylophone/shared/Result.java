@@ -27,6 +27,13 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * output, including classes which are unserializable.
  * <p>
  * 
+ * A {@code Result} object may represent a partial or complete result for the
+ * action. A partial result means that the action is not yet complete, but that
+ * the client should be aware of some progress. Clients can elect, through the
+ * {@link Dispatcher}, to only accept complete results and discard any partial
+ * results created during the execution process.
+ * <p>
+ * 
  * Note that implementations of this interface must meet the requirements for
  * RPC-serializable objects. In particular, implementation classes must declare
  * a default constructor of any visibility, and they must be designed with the
@@ -36,4 +43,13 @@ import com.google.gwt.user.client.rpc.IsSerializable;
  * 
  */
 public interface Result extends IsSerializable {
+	/**
+	 * Indicates whether or not this result indicates the completion of an
+	 * action. Actions and action handlers may return any number of partial
+	 * results, and the dispatcher will continue execution until a complete
+	 * result is obtained.
+	 * 
+	 * @return {@code true} if the result is complete; {@code false} otherwise
+	 */
+	boolean isComplete();
 }
