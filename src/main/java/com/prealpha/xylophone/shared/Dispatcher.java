@@ -16,20 +16,16 @@
 
 package com.prealpha.xylophone.shared;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.ImmutableList;
 import com.google.gwt.user.client.rpc.RemoteService;
 
 /**
- * The synchronous interface for event dispatching. Most users of this library
- * will not need to write an implementation of this interface.
- * <p>
- * 
- * All methods throw {@link NullPointerException} if any parameters are
- * {@code null}.
+ * The remote service interface for event dispatching. Clients may execute
+ * actions through this interface; complete results for those actions will then
+ * be returned when execution is complete.
  * 
  * @author Meyer Kizner
  * @see DispatcherAsync
+ * @see PublishingDispatcher
  * 
  */
 public interface Dispatcher extends RemoteService {
@@ -49,67 +45,8 @@ public interface Dispatcher extends RemoteService {
 	 * @return the complete result of the action
 	 * @throws ActionException
 	 *             thrown to indicate a problem during dispatch or execution
+	 * @throws NullPointerException
+	 *             if {@code action} is {@code null}
 	 */
 	<R extends Result> R execute(Action<R> action) throws ActionException;
-
-	/**
-	 * Establishes a subscription to results, both partial and incomplete,
-	 * resulting from certain actions. Any results arising from actions which
-	 * match the predicate given will be included in the subscription.
-	 * Subsequently, the returned {@link Subscription} can be
-	 * {@linkplain #check(Subscription) checked} to obtain the actual result
-	 * objects. Alternatively, it may be {@linkplain #cancel(Subscription)
-	 * cancelled} at any time. The dispatcher may not free resources associated
-	 * with a subscription until it is cancelled, so it is recommended that all
-	 * clients do so.
-	 * 
-	 * @param <A>
-	 *            the action type for the subscription
-	 * @param <R>
-	 *            the result type for the subscription
-	 * @param predicate
-	 *            a predicate matching actions to which a subscription is
-	 *            desired
-	 * @return a subscription to all results arising from actions matching
-	 *         {@code predicate}
-	 */
-	<A extends Action<R>, R extends Result> Subscription<R> subscribe(
-			Predicate<? super A> predicate);
-
-	/**
-	 * Checks the specified subscription for any results which may have been
-	 * published since the last check. The results will be returned as a list,
-	 * in the order in which they were created. If there are no published
-	 * results pending, this method will block until a result is published.
-	 * Therefore, an empty list will only be returned if the subscription is
-	 * cancelled while the method is waiting.
-	 * <p>
-	 * 
-	 * There is no way to obtain the exact action object which generated any
-	 * particular result. The client is only guaranteed that the action
-	 * fulfilled the predicate specified when the subscription was created.
-	 * Clients are advised to create multiple subscriptions, each with a
-	 * restrictive predicate, if this information is required.
-	 * 
-	 * @param <R>
-	 *            the result type for the subscription
-	 * @param subscription
-	 *            the subscription to check
-	 * @return a list of results, in chronological order, which have been
-	 *         published since the last time the subscription was checked
-	 * @throws ActionException
-	 *             thrown to indicate a problem during dispatch or execution in
-	 *             the time since the last check of this subscription
-	 */
-	<R extends Result> ImmutableList<R> check(Subscription<R> subscription)
-			throws ActionException;
-
-	/**
-	 * Cancels a subscription, freeing any resources associated with it. Any
-	 * results which have been published since the last check are discarded.
-	 * 
-	 * @param subscription
-	 *            the subscription to cancel
-	 */
-	void cancel(Subscription<?> subscription);
 }
