@@ -81,12 +81,8 @@ public interface PublishingDispatcher extends Dispatcher {
 	 *            the subscription to check
 	 * @return a list of results, in chronological order, which have been
 	 *         published since the last time the subscription was checked
-	 * @throws ActionException
-	 *             thrown to indicate a problem during dispatch or execution in
-	 *             the time since the last check of this subscription
 	 */
-	<R extends Result> ImmutableList<R> check(Subscription<R> subscription)
-			throws ActionException;
+	<R extends Result> ImmutableList<R> check(Subscription<R> subscription);
 
 	/**
 	 * Cancels a subscription, freeing any resources associated with it. Any
