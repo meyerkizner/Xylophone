@@ -47,18 +47,13 @@ public interface PublishingDispatcher extends Dispatcher {
 	 * with a subscription until it is cancelled, so it is recommended that all
 	 * clients do so.
 	 * 
-	 * @param <A>
-	 *            the action type for the subscription
-	 * @param <R>
-	 *            the result type for the subscription
 	 * @param predicate
 	 *            a predicate matching actions to which a subscription is
 	 *            desired
 	 * @return a subscription to all results arising from actions matching
 	 *         {@code predicate}
 	 */
-	<A extends Action<R>, R extends Result> Subscription<R> subscribe(
-			Predicate<? super A> predicate);
+	Subscription subscribe(Predicate<? super Action<?>> predicate);
 
 	/**
 	 * Checks the specified subscription for any results which may have been
@@ -75,14 +70,12 @@ public interface PublishingDispatcher extends Dispatcher {
 	 * Clients are advised to create multiple subscriptions, each with a
 	 * restrictive predicate, if this information is required.
 	 * 
-	 * @param <R>
-	 *            the result type for the subscription
 	 * @param subscription
 	 *            the subscription to check
 	 * @return a list of results, in chronological order, which have been
 	 *         published since the last time the subscription was checked
 	 */
-	<R extends Result> ImmutableList<R> check(Subscription<R> subscription);
+	ImmutableList<Result> check(Subscription subscription);
 
 	/**
 	 * Cancels a subscription, freeing any resources associated with it. Any
@@ -91,5 +84,5 @@ public interface PublishingDispatcher extends Dispatcher {
 	 * @param subscription
 	 *            the subscription to cancel
 	 */
-	void cancel(Subscription<?> subscription);
+	void cancel(Subscription subscription);
 }

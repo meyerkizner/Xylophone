@@ -32,10 +32,6 @@ public interface PublishingDispatcherAsync extends DispatcherAsync {
 	 * The asynchronous version of
 	 * {@link PublishingDispatcher#subscribe(Predicate)}.
 	 * 
-	 * @param <A>
-	 *            the action type for the subscription
-	 * @param <R>
-	 *            the result type for the subscription
 	 * @param predicate
 	 *            a predicate matching actions to which a subscription is
 	 *            desired
@@ -43,24 +39,21 @@ public interface PublishingDispatcherAsync extends DispatcherAsync {
 	 *            a callback to receive the subscription
 	 * @see PublishingDispatcher#subscribe(Predicate)
 	 */
-	<A extends Action<R>, R extends Result> void subscribe(
-			Predicate<? super A> predicate,
-			AsyncCallback<Subscription<R>> callback);
+	void subscribe(Predicate<? super Action<?>> predicate,
+			AsyncCallback<Subscription> callback);
 
 	/**
 	 * The asynchronous version of
 	 * {@link PublishingDispatcher#check(Subscription)}.
 	 * 
-	 * @param <R>
-	 *            the result type for the subscription
 	 * @param subscription
 	 *            the subscription to check
 	 * @param callback
 	 *            a callback to receive the list of results
 	 * @see PublishingDispatcher#check(Subscription)
 	 */
-	<R extends Result> void check(Subscription<R> subscription,
-			AsyncCallback<ImmutableList<R>> callback);
+	void check(Subscription subscription,
+			AsyncCallback<ImmutableList<Result>> callback);
 
 	/**
 	 * The asynchronous version of
@@ -72,5 +65,5 @@ public interface PublishingDispatcherAsync extends DispatcherAsync {
 	 *            a callback to be notified on completion
 	 * @see PublishingDispatcher#cancel(Subscription)
 	 */
-	void cancel(Subscription<?> subscription, AsyncCallback<Void> callback);
+	void cancel(Subscription subscription, AsyncCallback<Void> callback);
 }

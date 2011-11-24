@@ -19,17 +19,15 @@ package com.prealpha.xylophone.shared;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 /**
- * Represents a subscription to partial and complete {@link Result}s from an
- * {@link Action}, usually one that is long-running. Subscriptions should only
- * be created by and used with a specific {@link PublishingDispatcher}.
+ * Represents a subscription to partial and complete {@link Result}s from
+ * {@link Action}s, usually those that are long-running. Subscriptions should
+ * only be created by and used with a specific {@link PublishingDispatcher}.
  * 
- * @param <R>
- *            the result type for this subscription
  * @author Meyer Kizner
  * @see PublishingDispatcher
  * 
  */
-public final class Subscription<R extends Result> implements IsSerializable {
+public final class Subscription implements IsSerializable {
 	/**
 	 * A unique identifier for this subscription which is assigned by the
 	 * server. Non-{@code final} to allow for GWT serialization, but never
@@ -81,7 +79,7 @@ public final class Subscription<R extends Result> implements IsSerializable {
 		if (!(obj instanceof Subscription)) {
 			return false;
 		}
-		Subscription<?> other = (Subscription<?>) obj;
+		Subscription other = (Subscription) obj;
 		if (identifier != other.identifier) {
 			return false;
 		}
