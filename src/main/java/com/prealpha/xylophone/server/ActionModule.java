@@ -18,11 +18,17 @@ package com.prealpha.xylophone.server;
 
 import java.lang.annotation.Annotation;
 
+import javax.servlet.AsyncContext;
+import javax.servlet.http.HttpServletRequest;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Binder;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.google.inject.binder.LinkedBindingBuilder;
 import com.google.inject.internal.UniqueAnnotations;
+import com.google.inject.servlet.RequestScoped;
 import com.google.inject.util.Providers;
 import com.prealpha.xylophone.shared.Action;
 import com.prealpha.xylophone.shared.Dispatcher;
@@ -72,6 +78,21 @@ public abstract class ActionModule extends AbstractModule {
 		bind(PublishingDispatcher.class).to(PublishingDispatcherImpl.class).in(
 				Singleton.class);
 		configureActions();
+	}
+
+	/**
+	 * Provides the binding for {@link AsyncContext} which is required by
+	 * {@link PublishingDispatcherImpl}.
+	 * 
+	 * @param request
+	 *            the current servlet request
+	 * @return an {@code AsyncContext} for the current request
+	 */
+	@Provides
+	@RequestScoped
+	@Inject
+	AsyncContext getAsyncContext(HttpServletRequest request) {
+		return request.startAsync();
 	}
 
 	/**

@@ -57,9 +57,10 @@ public interface PublishingDispatcher extends Dispatcher {
 	 * Checks a subscription for any results which may have been published since
 	 * the last check. The results will be returned as a list, in the order in
 	 * which they were created. If there are no published results pending, this
-	 * method will block until a result is published. Therefore, an empty list
-	 * will only be returned if the subscription is cancelled while the method
-	 * is waiting.
+	 * method will block until a result is published. An empty list will be
+	 * returned if the subscription is canceled while the wait is in progress,
+	 * or if this method is called in a separate request; in the latter case,
+	 * the new request will displace the old one.
 	 * <p>
 	 * 
 	 * There is no way to obtain the exact action object which generated any
