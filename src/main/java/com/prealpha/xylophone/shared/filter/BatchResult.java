@@ -54,6 +54,11 @@ public final class BatchResult implements Result {
 		this.results = ImmutableList.copyOf(results);
 	}
 
+	@Override
+	public boolean isComplete() {
+		return true;
+	}
+
 	/**
 	 * @return the results in this batch
 	 */
