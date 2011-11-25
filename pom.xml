@@ -60,6 +60,12 @@
 		</dependency>
 		<dependency>
 			<groupId>com.mycila.testing.plugins</groupId>
+			<artifactId>mycila-testing-easymock</artifactId>
+			<version>2.9.ga</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mycila.testing.plugins</groupId>
 			<artifactId>mycila-testing-guice2</artifactId>
 			<version>2.9.ga</version>
 			<scope>test</scope>
@@ -68,6 +74,12 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>3.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

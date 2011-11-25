@@ -18,15 +18,19 @@ package com.prealpha.xylophone.server;
 
 import static org.junit.Assert.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.google.common.collect.ImmutableSet;
 import com.google.inject.Inject;
 import com.google.inject.Module;
+import com.google.inject.Scopes;
 import com.google.inject.Singleton;
-import com.google.inject.servlet.ServletModule;
+import com.google.inject.servlet.RequestScoped;
 import com.mycila.testing.junit.MycilaJunitRunner;
+import com.mycila.testing.plugin.easymock.Mock;
+import com.mycila.testing.plugin.guice.Bind;
 import com.mycila.testing.plugin.guice.ModuleProvider;
 import com.prealpha.xylophone.server.CompleteAction.CompleteHandler;
 import com.prealpha.xylophone.server.CompleteAction.CompleteResult;
@@ -39,19 +43,25 @@ import com.prealpha.xylophone.shared.Dispatcher;
 public final class DispatcherImplTest {
 	@SuppressWarnings("unused")
 	@ModuleProvider
-	private Iterable<Module> getModules() {
-		return ImmutableSet.<Module> of(new ActionModule() {
+	private Module getModule() {
+		return new ActionModule() {
 			@Override
 			protected void configureActions() {
+				bindScope(RequestScoped.class, Scopes.NO_SCOPE);
 				bindAction(PartialAction.class).to(PartialHandler.class).in(
 						Singleton.class);
 				bindAction(CompleteAction.class).to(CompleteHandler.class);
 			}
-		}, new ServletModule());
+		};
 	}
 
 	@Inject
 	private Dispatcher dispatcher;
+
+	@SuppressWarnings("unused")
+	@Mock(Mock.Type.NICE)
+	@Bind
+	private HttpServletRequest request;
 
 	@Test
 	public void testPartialAction() throws ActionException {
