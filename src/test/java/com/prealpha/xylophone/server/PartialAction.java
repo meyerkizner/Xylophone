@@ -48,12 +48,18 @@ final class PartialAction implements Action<PartialResult> {
 		@Override
 		public PartialResult execute(PartialAction action) {
 			int n;
-			if (nMap.containsKey(action)) {
-				n = nMap.get(action) + 1;
-			} else {
-				n = 0;
+			synchronized (this) {
+				if (nMap.containsKey(action)) {
+					n = nMap.get(action) + 1;
+				} else {
+					n = 1;
+				}
+				nMap.put(action, n);
 			}
-			nMap.put(action, n);
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException ix) {
+			}
 			return new PartialResult(n);
 		}
 	}
