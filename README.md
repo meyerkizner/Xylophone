@@ -4,6 +4,6 @@ This project is licensed under the Apache License, version 2.0.
 
 Features
 ========
-* Event dispatching
-* Client-side filters (target: 0.2-beta)
-* Events and continuation support (target: 0.3-beta)
+* Action dispatching
+* Client-side filters
+* Long-running actions may return partial results (target: 0.3-beta)

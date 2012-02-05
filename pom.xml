@@ -7,7 +7,7 @@
 
 	<groupId>com.prealpha.xylophone</groupId>
 	<artifactId>xylophone</artifactId>
-	<version>0.2.2-beta</version>
+	<version>0.3-beta</version>
 	<packaging>jar</packaging>
 
 	<properties>
@@ -15,6 +15,13 @@
 	</properties>
 
 	<dependencies>
+		<!-- Out of order so that this overrides gwt-servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -23,9 +30,9 @@
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
-			<artifactId>gwt-user</artifactId>
+			<artifactId>gwt-dev</artifactId>
 			<version>2.4.0</version>
-			<scope>provided</scope>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -34,15 +41,45 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>2.4.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 			<version>3.0</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.google.inject.extensions</groupId>
+			<artifactId>guice-servlet</artifactId>
+			<version>3.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mycila.testing.plugins</groupId>
+			<artifactId>mycila-testing-easymock</artifactId>
+			<version>2.9.ga</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mycila.testing.plugins</groupId>
+			<artifactId>mycila-testing-guice2</artifactId>
+			<version>2.9.ga</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.easymock</groupId>
+			<artifactId>easymock</artifactId>
+			<version>3.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

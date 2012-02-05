@@ -37,14 +37,23 @@ import com.prealpha.xylophone.shared.Result;
  */
 public interface ActionHandler<A extends Action<R>, R extends Result> {
 	/**
-	 * Executes an {@link Action} appropriate to this handler, returning a
-	 * {@link Result} whose type is consistent with the action's type parameter.
-	 * An {@link ActionException} may be thrown if the action cannot be
-	 * dispatched or executed for any reason.
+	 * Executes an {@link Action} appropriate to this handler, returning the
+	 * next partial or complete {@link Result} which is suitable for return or
+	 * publication, as applicable. The {@code Result} must be consistent with
+	 * the action's type parameter. An {@link ActionException} may be thrown if
+	 * the action cannot be dispatched or executed for any reason.
+	 * <p>
+	 * 
+	 * If a partial result is returned, the handler must make note of the
+	 * action's state for when it is executed again. When this occurs, execution
+	 * must begin where the last method call left off, not at the beginning of
+	 * the overall action execution. Handlers must consider actions as separate
+	 * only if they are unequal, as determined by the
+	 * {@link Object#equals(Object)} method.
 	 * 
 	 * @param action
 	 *            an action to execute
-	 * @return the result of the action
+	 * @return the next partial or complete result of the action
 	 * @throws ActionException
 	 *             thrown to indicate a problem during dispatch or execution
 	 */
