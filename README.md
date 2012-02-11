@@ -6,4 +6,4 @@ Features
 ========
 * Action dispatching
 * Client-side filters
-* Long-running actions may return partial results (target: 0.3-beta)
+* Long-running actions may return partial results
