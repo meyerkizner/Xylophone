@@ -51,6 +51,7 @@ public interface Result extends IsSerializable {
 	 * result is obtained.
 	 * 
 	 * @return {@code true} if the result is complete; {@code false} otherwise
+	 * @since 0.3-beta
 	 */
 	boolean isComplete();
 }
