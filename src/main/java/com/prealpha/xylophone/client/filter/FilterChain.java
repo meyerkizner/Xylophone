@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 Meyer Kizner
+ * Copyright 2012 Meyer Kizner
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,10 +21,12 @@ import static com.google.common.base.Preconditions.*;
 import java.util.List;
 import java.util.ListIterator;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.prealpha.xylophone.shared.Action;
 import com.prealpha.xylophone.shared.DispatcherAsync;
+import com.prealpha.xylophone.shared.PublishingDispatcherAsync;
 import com.prealpha.xylophone.shared.Result;
 
 /**
@@ -37,11 +39,26 @@ import com.prealpha.xylophone.shared.Result;
  * server. Once initialization is complete, each action sent to the chain will
  * be passed to the first filter, which will then pass it to the second, and so
  * on until reaching the chain's backing dispatcher.
+ * <p>
+ * 
+ * As of 0.3.1-beta, {@code FilterChain} implements
+ * {@link PublishingDispatcherAsync} and supports
+ * {@linkplain #init(PublishingDispatcherAsync) initialization} with a
+ * publishing dispatcher. If a chain is initialized with a publishing
+ * dispatcher, the implementations of
+ * {@link PublishingDispatcherAsync#subscribe(Predicate, AsyncCallback)
+ * subscribe}, {@link PublishingDispatcherAsync#check(long, AsyncCallback)
+ * check}, and {@link PublishingDispatcherAsync#cancel(long, AsyncCallback)}
+ * will delegate to the backing publishing dispatcher. Note, however, that
+ * {@link ActionFilter} does not extend {@code PublishingDispatcherAsync}, so
+ * the elements of the chain themselves will be unable to interact with these
+ * method calls in any way.
  * 
  * @author Meyer Kizner
  * 
  */
-public final class FilterChain implements ActionFilter {
+public final class FilterChain implements ActionFilter,
+		PublishingDispatcherAsync {
 	/**
 	 * The list of filters. Incoming actions are sent to the first element in
 	 * the list, and the chain proceeds in the list's order. May be empty, but
@@ -60,6 +77,17 @@ public final class FilterChain implements ActionFilter {
 	 * initialized.
 	 */
 	private DispatcherAsync head;
+
+	/**
+	 * If this filter chain was {@linkplain #init(PublishingDispatcherAsync)
+	 * initialized} with a {@code PublishingDispatcherAsync}, that dispatcher
+	 * will be stored here so that the publishing methods can be delegated. If
+	 * this chain is uninitialized or initialized with another dispatcher, this
+	 * field is {@code null}.
+	 * 
+	 * @since 0.3.1-beta
+	 */
+	private PublishingDispatcherAsync publisher;
 
 	/**
 	 * Constructs a new {@code FilterChain} with the specified list of action
@@ -99,6 +127,7 @@ public final class FilterChain implements ActionFilter {
 	 * @throws IllegalStateException
 	 *             {@inheritDoc}, or if any filters in this chain are already
 	 *             initialized
+	 * @see #init(PublishingDispatcherAsync)
 	 */
 	@Override
 	public void init(DispatcherAsync dispatcher) {
@@ -113,6 +142,27 @@ public final class FilterChain implements ActionFilter {
 		}
 	}
 
+	/**
+	 * Initializes this filter chain with the publishing dispatcher provided, in
+	 * exactly the same manner as by a call to {@link #init(DispatcherAsync)}.
+	 * However, the publishing dispatcher will be used to execute calls to the
+	 * {@code PublishingDispatcherAsync} methods of the chain. If an ordinary
+	 * dispatcher is passed for initialization, those methods will throw
+	 * {@code UnsupportedOperationException}.
+	 * 
+	 * @param publisher
+	 *            the dispatcher and publisher this filter should use internally
+	 * @throws IllegalStateException
+	 *             if this method has already been called on this instance, or
+	 *             if any filters in this chain are already initialized
+	 * @see #init(DispatcherAsync)
+	 * @since 0.3.1-beta
+	 */
+	public void init(PublishingDispatcherAsync publisher) {
+		init(publisher);
+		this.publisher = publisher;
+	}
+
 	@Override
 	public boolean isInitialized() {
 		return (head != null);
@@ -123,5 +173,46 @@ public final class FilterChain implements ActionFilter {
 			AsyncCallback<R> callback) {
 		checkState(isInitialized());
 		head.execute(action, callback);
+	}
+
+	/**
+	 * @since 0.3.1-beta
+	 */
+	@Override
+	public void subscribe(Predicate<? super Action<?>> predicate,
+			AsyncCallback<Long> callback) {
+		checkState(isInitialized());
+		if (publisher != null) {
+			publisher.subscribe(predicate, callback);
+		} else {
+			throw new UnsupportedOperationException();
+		}
+	}
+
+	/**
+	 * @since 0.3.1-beta
+	 */
+	@Override
+	public void check(long subscriptionId,
+			AsyncCallback<ImmutableList<Result>> callback) {
+		checkState(isInitialized());
+		if (publisher != null) {
+			publisher.check(subscriptionId, callback);
+		} else {
+			throw new UnsupportedOperationException();
+		}
+	}
+
+	/**
+	 * @since 0.3.1-beta
+	 */
+	@Override
+	public void cancel(long subscriptionId, AsyncCallback<Void> callback) {
+		checkState(isInitialized());
+		if (publisher != null) {
+			publisher.cancel(subscriptionId, callback);
+		} else {
+			throw new UnsupportedOperationException();
+		}
 	}
 }
